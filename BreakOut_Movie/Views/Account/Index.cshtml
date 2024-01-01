@@ -1,0 +1,146 @@
+﻿@{
+    Layout = "_LoginLayout";
+}
+@{
+    var registredUser = ViewBag.registredUser ?? null;
+    var usermodel = ViewBag.usermodel ?? null;
+}
+<div class="container" id="container">
+
+    <div class="form-container sign-up-container" id="sign-up-container">
+        @if (registredUser == null)
+        {
+
+            <partial name="Register" />
+        }
+        else
+        {
+            RegisterViewModel UserRegister = registredUser;
+            <partial name="Register" model="@UserRegister" />
+        }
+    </div>
+    <div class="form-container sign-in-container" id="sign-in-container">
+        @if (usermodel == null)
+        {
+
+            <partial name="Login" />
+        }
+        else
+        {
+            LoginViewModel Userlogin = usermodel;
+            <partial name="Login" model="@Userlogin" />
+        }
+
+    </div>
+    <div class="overlay-container">
+        <div class="overlay">
+            <div class="overlay-panel overlay-left">
+                <h1>Welcome Back!</h1>
+                <p>To keep connected with us please login with your personal info</p>
+                <button class="ghost" id="signIn">Sign In</button>
+            </div>
+            <div class="overlay-panel overlay-right">
+                <h1>Hello, Friend!</h1>
+                <p>Enter your personal details and start journey with us</p>
+                <button class="ghost" id="signUp">Sign Up</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (ViewBag.redirecet == 1)
+{
+    <script type="text/javascript">
+
+        const container = document.getElementById('container');
+        const signUpButton = document.getElementById('signUp');
+        const signInButton = document.getElementById('signIn');
+        const signInLink = document.getElementById('sing-in-link');
+        const signUpLink = document.getElementById('sing-up-link');
+        const signInContainer = document.getElementById('sign-in-container');
+        const signUpContainer = document.getElementById('sign-up-container');
+
+
+
+        signUpContainer.classList.add("top");
+
+        signInLink.addEventListener('click', () => {
+            signUpContainer.classList.remove("top");
+            signInContainer.classList.add("top");
+
+        });
+        signUpLink.addEventListener('click', () => {
+            signInContainer.classList.remove("top");
+            signUpContainer.classList.add("top");
+
+        });
+
+
+
+        container.classList.add("right-panel-active");
+
+        signUpButton.addEventListener('click', () => {
+            container.classList.add("right-panel-active");
+        });
+
+        signInButton.addEventListener('click', () => {
+            container.classList.remove("right-panel-active");
+        });
+    </script>
+
+}
+else
+{
+    <script type="text/javascript">
+
+        const container = document.getElementById('container');
+        const signUpButton = document.getElementById('signUp');
+        const signInButton = document.getElementById('signIn');
+        const signInLink = document.getElementById('sing-in-link');
+        const signUpLink = document.getElementById('sing-up-link');
+      
+        const signInContainer = document.getElementById('sign-in-container');
+        const signUpContainer = document.getElementById('sign-up-container');
+
+
+
+
+        signInLink.addEventListener('click', () => {
+            signUpContainer.classList.remove("top");
+            signInContainer.classList.add("top");
+
+        });
+        signUpLink.addEventListener('click', () => {
+            signInContainer.classList.remove("top");
+            signUpContainer.classList.add("top");
+
+        });
+
+        signUpButton.addEventListener('click', () => {
+            container.classList.add("right-panel-active");
+        });
+
+        signInButton.addEventListener('click', () => {
+            container.classList.remove("right-panel-active");
+        });
+    </script>
+
+    
+}
+@section Scripts{
+
+    <script>
+
+        $(document).ready(function () {
+            // This will fire when document is ready:
+            $(window).resize(function () {
+                // This will fire each time the window is resized:
+                if ($(window).width() <= 780) {
+                    
+                }
+            }).resize(); // This will simulate a resize to trigger the initial run.
+        });
+    </script>
+
+}
+

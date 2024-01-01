@@ -1,0 +1,147 @@
+﻿@model IEnumerable<ApplicationUser>
+
+
+
+ <div class="row col-md-11 col-12 d-flex justify-content-center align-items-center">
+   
+    <div class=" row col-md-9 col-11 d-flex pt-5">
+        <div class="col-6 headers">
+            @if (Model.Any())
+            {
+                <h2>
+                    All Admins
+
+                </h2>
+            }
+        </div>
+
+        <div class="col-6 d-flex justify-content-end align-items-end mb-2  ">
+
+            <a asp-action="AddAdmin" asp-controller="Admin" class="add-btn">
+                <i class="bi bi-patch-plus"></i> Add Admin
+            </a>
+        </div>
+      
+        @if (Model.Any())
+        {
+            <table class="table table-success">
+                <thead>
+                    <tr style="text-align:center">
+                        <th style="background-color:#f4cf9f">#</th>
+                        <th style="background-color:#f4cf9f;width:60%">Admin Name</th>
+                        <th style="background-color:#f4cf9f">Remove Role</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr></tr>
+                    @foreach (var admin in Model)
+                    {
+                        <tr style="text-align:center">
+                            <td style ="background-color:#f4cf9f"></td>
+                            <td style="background-color:#f4cf9f">@admin.UserName</td>
+                            <td style="background-color:#f4cf9f">
+                                <a href="javaScript:;" class="js-delete" data-id="@(admin.UserName)">
+                                    <i class="bi bi-trash3-fill delete text-danger"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <div class="alert alert-warning alert-dismissible d-flex align-items-center fade show mt-5">
+                <i class="bi-exclamation-triangle-fill"></i>
+                <strong class="mx-2">Warning!</strong> No Admins found ....
+
+            </div>
+        }
+    </div>
+
+</div>
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial.cshtml");
+    }
+    <script>
+      
+        $(document).ready(function () {
+
+            // $('.add-btn').on("click", function () {
+            //     $('.add-btn').addClass('d-none')
+            //     $('#form-admin').removeClass('d-none');
+            // });
+            // $('.close-icon').on("click", function () {
+            //     $('#form-admin').addClass('d-none')
+            //     $('.add-btn').removeClass('d-none');
+            // });
+            // $('.promotion').on("click", function () {
+            //     $('#form-admin').addClass('d-none')
+            //     $('#form-promotion').removeClass('d-none');
+            // });
+
+            // $('.close-icon-pro').on("click", function () {
+            //     $('#form-promotion').addClass('d-none')
+            //     $('.add-btn').removeClass('d-none');
+            // });
+            $('.js-delete').on('click', function () {
+                var btn = $(this);
+                var Name = btn.data('id');
+                console.log(Name);
+                Swal.fire({
+                    title: "Are you sure you want to revoke Admin Role from this User?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#f9b17a",
+                    cancelButtonColor: "gray",
+                    confirmButtonText: " Delete",
+                    color: "#f78316",
+                    background: "#1b3c59 ",
+                }).then((result) => {
+                    if (result.isConfirmed){
+
+                        $.ajax({
+                            url: '/Admin/RemoveAdminRole/' + btn.data('id'),
+                            success: function () {
+                                Swal.fire({
+
+                                    title: "Deleted!",
+                                    text: "Admin Role revoked from"+Name,
+                                    icon: "success",
+                                    confirmButtonColor: "#f9b17a",
+                                    color: "#f78316",
+                                    background: "#f4f1eb ",
+                                });
+                                btn.parents('tr').animate({ 'line-height': 0 }, 1000).hide(500);
+
+                            },
+
+                            error: function () {
+                                Swal.fire({
+
+                                    title: "Ooooops!",
+                                    text: "Something went wrong!",
+                                    icon: "error",
+                                    confirmButtonColor: "#c62d2d",
+                                    color: "#c62d2d",
+                                    background: "#1b3c59 "
+                                });
+
+
+                            }
+                        });
+
+                    }
+                });
+
+            });
+
+
+
+        });
+
+           
+     
+    </script>
+}

@@ -1,0 +1,328 @@
+﻿@model IEnumerable<UserHomeVM>
+@{
+    ViewData["Title"] = "UserHome Page";
+    
+
+}
+<style>
+    .red-icon{
+        color:#e21818;
+    }
+    .white-icon{
+        color:white;
+    }
+    .star-icon{
+        color: #ffc107;
+    }
+</style>
+
+<partial name="_IntroView" />
+ 
+<div class="container">
+    <div class=" container col-xl-10 col-lg-12 col-md-12 col-sm-12  col-8 ">
+
+
+        @{
+            if (Model.Any())
+            {
+                IEnumerable<UserHomeVM> Favoritemovies = Model.Where(m => m.IsFavorite == true);
+                if (Favoritemovies.Any())
+                {
+                    <div class="headers favorite mt-3  " style="color:#c82333;margin-left:-80px">
+                        <h1 class="">Your Favorite Movies </h1>
+                    </div>
+                    <div class="row card-group">
+                        @foreach (var movie in Favoritemovies)
+                        {
+                            
+                            <!-- Card-->
+                            <partial name="_movieCard" model="@movie" />
+                            <!-- Details Modal -->
+                            <partial name="_detailsModal" model="@movie.Movie" />
+                            <!-- End Details Modal -->
+                            <!--Rate model -->
+                            <div class="modal" id="ratingmodal_@movie.Movie.MovieNoRate.Id" tabindex="-1" role="dialog">
+                                <div class="modal-dialog modal-dialog-centered " role="document">
+                                    <div class="modal-content " style="background-color:#f4f1eb;">
+
+                                        <div class="modal-body  d-flex flex-column justify-content-center align-content-center align-items-center" style="padding:0">
+                                            <div class=" col-12 d-flex justify-content-end align-content-end align-items-end">
+                                                <button type="button" class="modal-close" onclick="CloseModalRating(@movie.Movie.MovieNoRate.Id)">
+                                                    <h2> <i class="bi bi-x"></i></h2>
+                                                </button>
+                                            </div>
+                                            <div class="d-inline-block">
+                                                <img src="~/assets/images/rate_star.png" width="150" height="130" />
+                                            </div>
+
+                                            <h6> Are you enjoying with this movie?</h6>
+                                            <span> tab a star to give your rating</span>
+                                            <p class="stars @(movie.userRate>0?"active":"")" id="stars_@movie.Movie.MovieNoRate.Id">
+
+                                                <span>
+
+                                                    <a class="star-1" data-id="@movie.Movie.MovieNoRate.Id" data-rate="@movie.userRate">1</a>
+                                                    <a class="star-2 " data-id="@movie.Movie.MovieNoRate.Id" data-rate="@movie.userRate">2</a>
+                                                    <a class="star-3" data-id="@movie.Movie.MovieNoRate.Id" data-rate="@movie.userRate">3</a>
+                                                    <a class="star-4" data-id="@movie.Movie.MovieNoRate.Id" data-rate="@movie.userRate">4</a>
+                                                    <a class="star-5" data-id="@movie.Movie.MovieNoRate.Id" data-rate="@movie.userRate">5</a>
+                                                </span>
+                                            </p>
+                                            <div class="modal-footer col-12 d-flex justify-content-end align-items-end ">
+
+                                                <buttom type="button" class="card-btn watch Rating" onclick="submitRate(@movie.Movie.MovieNoRate.Id)">
+                                                    Submit
+                                                </buttom>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--End rate model -->
+                        }
+                    </div>
+                    <hr style="margin:20px -15vw" />
+                }
+                
+                <div class="headers mt-3  " style="color: #2d7889;margin-left:-80px">
+                    <h1 class=""> All Movies For You </h1>
+                </div>
+                <div class="row card-group">
+                    @foreach (var movie in Model)
+                    {
+                        <!-- Card-->
+                        <partial name="_movieCard" model="@movie" />
+                        <!-- Details Modal -->
+                        <partial name="_detailsModal" model="@movie.Movie" />
+                        <!-- End Details Modal -->
+                        <!--Rate model -->
+                        <div class="modal" id="ratingmodal_@movie.Movie.MovieNoRate.Id" tabindex="-1" role="dialog">
+                            <div class="modal-dialog modal-dialog-centered " role="document">
+                                <div class="modal-content " style="background-color:#f4f1eb;">
+
+                                    <div class="modal-body  d-flex flex-column justify-content-center align-content-center align-items-center" style="padding:0">
+                                        <div class=" col-12 d-flex justify-content-end align-content-end align-items-end">
+                                            <button type="button" class="modal-close" onclick="CloseModalRating(@movie.Movie.MovieNoRate.Id)">
+                                                <h2> <i class="bi bi-x"></i></h2>
+                                            </button>
+                                        </div>
+                                        <div class="d-inline-block">
+                                            <img src="~/assets/images/rate_star.png" width="150" height="130" />
+                                        </div>
+
+                                        <h6> Are you enjoying with this movie?</h6>
+                                        <span> tab a star to give your rating</span>
+                                        <p class="stars @(movie.userRate>0?"active":"")" id="stars_@movie.Movie.MovieNoRate.Id">
+
+                                            <span>
+
+                                                <a class="star-1" data-id="@movie.Movie.MovieNoRate.Id" data-rate="@movie.userRate">1</a>
+                                                <a class="star-2 " data-id="@movie.Movie.MovieNoRate.Id" data-rate="@movie.userRate">2</a>
+                                                <a class="star-3" data-id="@movie.Movie.MovieNoRate.Id" data-rate="@movie.userRate">3</a>
+                                                <a class="star-4" data-id="@movie.Movie.MovieNoRate.Id" data-rate="@movie.userRate">4</a>
+                                                <a class="star-5" data-id="@movie.Movie.MovieNoRate.Id" data-rate="@movie.userRate">5</a>
+                                            </span>
+                                        </p>
+                                        <div class="modal-footer col-12 d-flex justify-content-end align-items-end ">
+
+                                            <buttom type="button" class="card-btn watch Rating" onclick="submitRate(@movie.Movie.MovieNoRate.Id)">
+                                                Submit
+                                            </buttom>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--End rate model -->
+                    }
+                </div>
+            }
+
+        }
+
+
+    </div>
+</div>
+
+@section Scripts{
+
+    <script>
+        
+        function showDetailsModal(id) {
+            $("#Detailsmodal_" + id).modal("show");
+            
+        }
+        function CloseDetailsModal(id) {
+            $("#Detailsmodal_" + id).modal('hide');
+        }
+
+        function DisplayVideoModal(id,rate) {
+         
+            $('#stars_' + id + ' a.star-' + rate).removeClass('active');
+            $('#stars_' + id + ' span').removeClass('active');
+            if (rate > 0) {
+                var rstar = $('#stars_' + id + ' a.star-' + rate);
+                $('#stars_' + id + ' span' + '#stars_' + id + ' a').removeClass('active');
+
+                rstar.addClass('active');
+                $('#stars_' + id + ' span').addClass('active');
+                $('#rating-star_' + id).removeClass('bi-star white-icon');
+                $('#rating-star_' + id).addClass('bi-star-fill star-icon')
+            }
+            
+            var url = "/Home/DisplayVideo/" + id;
+            $("#modal-body_" + id).load(url, function (data) {
+
+                $("#ModalVideo_" + id).modal("show");
+               
+                setTimeout(function () {
+                    if ($("#ModalVideo_" + id).hasClass('show')) {
+                        if (!($('#rating-star_' + id).hasClass('bi-star-fill'))) {
+                            const video = document.getElementById('video-player_' + id);
+                            if (video.play()){
+                                video.pause();
+                            }
+
+                            $("#ratingmodal_"+id).modal("show");
+
+                        }
+                        }
+                    
+                }, 5000);
+            })
+
+            
+        }
+        function CloseVideoModal(id) {
+            const video = document.getElementById('video-player_'+ id);
+            
+            $("#ModalVideo_" + id).modal('hide');
+
+        }
+        function RatingModal(id) {
+            const video = document.getElementById('video-player_'+id);
+            $("#ratingmodal_"+ id).modal("show");
+        }
+        function  CloseModalRating(id){
+          const video = document.getElementById('video-player_'+id);               
+            $("#ratingmodal_"+ id).modal("hide");
+         }
+
+        let rateValue = 0;
+        $('.stars a').on('click', function () {
+            var id = $(this).data('id');
+            var rate = $(this).data('rate');
+            rateValue = $(this).text();      
+            $('#stars_' + id + ' a.star-' + rate).removeClass('active');
+            $('#stars_' + id + ' span').removeClass('active');
+            $('#stars_' + id + ' span' + '#stars_' + id + ' a').removeClass('active');
+           
+            $(this).addClass('active');
+            $('#stars_' + id + ' span').addClass('active');
+        });
+
+        function submitRate(id) {
+            $("#ratingmodal_" + id).modal("hide");
+            if (rateValue > 0) {
+
+                let rateData = {
+                    userRate: rateValue,
+                    movieId: id
+                };
+                $.ajax({
+                    url: '/Home/AddRate',
+                    type: 'post',
+                    data: rateData,
+                    success: function () {
+                        $('#rating-star_' + id).removeClass('bi-star white-icon');
+                        $('#rating-star_' + id).addClass('bi-star-fill star-icon');
+                        Swal.fire({
+                            text: "Thansk for your rating.",
+                            confirmButtonColor: "#f9b17a",
+                            color: "#f78316",
+                            background: "#f4f1eb ",
+                        });
+                    },
+
+                    error: function () {
+                        $('#stars_' + id + ' a.star-' + rateValue).removeClass('active');
+                        $('#stars_' + id + ' span').removeClass('active');
+                        Swal.fire({
+                            title: "Ooooops!",
+                            text: "Something went wrong!",
+                            confirmButtonColor: "#c62d2d",
+                            color: "#c62d2d",
+                            background: "#1b3c59 ",
+                        });
+
+
+                    }
+                });
+            }
+
+
+        }
+        function AddFavorite(id) {
+            let data = {
+                movieId: id
+            };
+            var isFavorite = $('#heart_' + id).hasClass('bi-heart-fill');
+            if (!isFavorite) {
+                $.ajax({
+                   
+                    url: '/Home/AddFavoriteMovie',
+                    type: 'post',
+                    data: data,
+                    success: function () {
+                        $('#heart_' + id).removeClass('white-icon');
+                        $('#heart_' + id).addClass('red-icon');
+                        $('#heart_' + id).removeClass('bi-heart');
+                        $('#heart_' + id).addClass('bi-heart-fill');
+                    },
+                    error: function () {
+                        console.log(id);
+                        Swal.fire({
+                            title: "Ooooops!",
+                            text: "Something went wrong! Tray Agin",
+                            confirmButtonColor: "#f9b17a",
+                            color: "#f27474",
+                            background: "#1b3c59 ",
+                        });
+                    }
+                });
+            }
+            else if (isFavorite) {
+                $.ajax({
+                    url: '/Home/RemoveFavoriteMovie',
+                    type: 'post',
+                    data: data,
+                    success: function () {
+                        $('#heart_' + id).removeClass('red-icon');
+                        $('#heart_' + id).addClass('white-icon');
+
+                        $('#heart_' + id).removeClass('bi-heart-fill');
+                        $('#heart_' + id).addClass('bi-heart');
+
+                    },
+
+                    error: function () {
+                        Swal.fire({
+                            title: "Ooooops!",
+                            text: "Something went wrong! Tray Agin",
+                            confirmButtonColor: "#c62d2d",
+                            color: "#c62d2d",
+                            background: "#1b3c59 ",
+                        });
+
+
+                    }
+                });
+            } 
+
+
+        }
+    </script>
+
+}

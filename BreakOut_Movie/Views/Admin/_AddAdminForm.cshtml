@@ -1,0 +1,54 @@
+﻿@model RegisterViewModel
+
+<div class="d-flex justify-content-end  ">
+    <a asp-action="AdminIndex" class="close-icon">
+        <h3 style="color:#445754">  <i class="bi bi-x-square"></i> </h3>
+    </a>
+</div>
+
+<div class="col-7   Genreform">
+
+    <div class="headers mb-5" >
+        <h2>
+            Add Admin
+        </h2>
+    </div>
+    <div>
+        <form class="row g-3 form-body" method="POST" asp-action="AddAdmin" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger" id="registerSummary"></div>
+            <div class="form-group col-11">
+
+                <input type="text" class="form-control" asp-for="User_Name" maxlength="250" placeholder="User Name" />
+
+                <span asp-validation-for="User_Name" class="text-danger"></span>
+            </div>
+            <div class="form-group col-11">
+
+                <input type="text" class="form-control" asp-for="UserPassword" maxlength="250" placeholder="Password" />
+
+                <span asp-validation-for="UserPassword" class="text-danger"></span>
+            </div>
+            <div class="form-group col-11">
+                <input type="text" class="form-control" asp-for="confirmPassword" maxlength="250" placeholder="Confirm Password" />
+
+                <span asp-validation-for="confirmPassword" class="text-danger"></span>
+            </div>
+
+            <div class=" col-11 d-flex justify-content-end ">
+                <a href="javaScript:;" class="promotion">Promotion real user? </a>
+
+            </div>
+            <div class="p-1 col-11 d-flex justify-content-center ">
+                <button type="submit" class="btn btn-primary" style="padding:6px 28px">
+                    <i class="bi bi-check-lg"></i>
+                    save
+                </button>
+
+
+            </div>
+
+
+        </form>
+    </div>
+
+</div>

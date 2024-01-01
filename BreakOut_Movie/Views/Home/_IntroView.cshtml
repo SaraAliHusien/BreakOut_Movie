@@ -1,0 +1,33 @@
+﻿<div class="bg-img row">
+    <div class="obacity-div">
+        <div class="row coll-11 h-100 d-flex justify-content-center align-content-center">
+
+            <div class="col-md-9  d-flex flex-column justify-content-center align-items-center">
+
+                <div class="col-9 d-flex justify-content-center align-items-center intro ">
+
+                    <h2> BREAK  <span style="color:black;">OUT</span> </h2>
+
+                </div>
+                <div class="col-9 d-flex justify-content-center align-items-center movie-word">
+                    <h2>Movies</h2>
+
+                </div>
+                <p class="desc">An integrated library that allows you to enjoy and free viewing of all exclusive and non-exclusive movies.</p>
+                @if ((ViewData["Title"])!.ToString() == "Home Page")
+                {
+                    <div class="p-2 d-flex justify-content-center ">
+                        <a asp-action="Index" asp-controller="Account" class="intro-btn">
+                            Sing in or register
+                        </a>
+
+                    </div>
+                    <p class="explanation"> for watch and download your favorite movies.</p>
+                }
+
+            </div>
+        </div>
+    </div>
+
+</div>
+

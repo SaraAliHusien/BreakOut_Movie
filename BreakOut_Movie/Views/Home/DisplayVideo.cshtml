@@ -1,0 +1,27 @@
+﻿@using BreakOut_Movie.Setting;
+@model Movie
+
+
+
+
+<div class=" mt-40-px d-flex justify-content-center align-items-center">
+    <video id="video-player_@Model.Id" height="500" width="900" controls>
+        <source src="@($"{FileSetting.videosPath}/{Model.VideoName}") " />
+    </video>
+  
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        const video = document.getElementById('video-player_' + @Model.Id);
+        video.setAttribute('controlsList', 'nodownload');
+        video.addEventListener('loadedmetadata', function () {
+            console.log(video.duration);
+
+
+        });
+    });
+
+
+</script>

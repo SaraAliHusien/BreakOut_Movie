@@ -1,0 +1,85 @@
+﻿@model EditGenreVm
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<section class=" GenreContainer col-lg-7 col-md-9 col-11 container ">
+
+    <div class="row justify-content-around align-items-center ">
+        <div class="d-flex justify-content-end  ">
+            <a asp-action="Index" class="close-icon">
+                <h3 style="color:#445754">  <i class="bi bi-x-square"></i> </h3>
+            </a>
+        </div>
+
+        <div class="col-lg-5   Genreform">
+
+            <div class="headers mb-lg-5" >
+                <h2>
+                  Edit Genre
+                </h2>
+            </div>
+            <form class="row g-3 form-body" method="POST" asp-action="Edit" enctype="multipart/form-data">
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="currentImage" />
+                <div class="form-group col-12">
+                    <label asp-for="Name"></label>
+                    <input type="text" class="form-control" asp-for="Name" maxlength="250" placeholder="Name" />
+
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <div class="input-group custom-file-button col-10">
+                        <label class="input-group-text" asp-for="Image"></label>
+                        <input type="file" class="form-control" asp-for="Image" accept=".png ,.jpg">
+
+                    </div>
+                    <span asp-validation-for="Image" class="text-danger"></span>
+                </div>
+
+
+                <div class="p-2 d-flex justify-content-center ">
+                    <button type="submit" class=" btn btn-primary ">
+                        <i class="bi bi-check-lg"></i>
+                        save
+                    </button>
+
+                </div>
+
+
+            </form>
+        </div>
+        <div class="row col-lg-4 col-md-8  ">
+            <div id="poster-container" class="">
+                <h4>movie poster</h4>
+                <img src="data:image/*;base64,@Convert.ToBase64String(Model.currentImage!)" alt="poster" class="img-thumbnail" width="200" height="300" />
+            </div>
+
+
+        </div>
+    </div>
+</section>
+
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial.cshtml");
+    }
+
+    <script>
+        $(document).ready(function () {
+            $('#Image').on('change', function () {
+
+
+                var posterContainer = $('#poster-container');
+                var img = window.URL.createObjectURL(this.files[0]);
+                posterContainer.removeClass('d-none');
+                posterContainer.find('img').attr('src', img)
+            });
+        });
+    </script>
+
+
+
+}

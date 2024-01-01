@@ -1,0 +1,58 @@
+﻿@model AdminViewModel
+@{
+    var fromPromotion = ViewBag.ForPromotion ?? false;
+}
+<section class=" GenreContainer col-lg-7 col-md-9 col-11 container ">
+
+        <div class="row justify-content-around align-items-center admin-form @(fromPromotion?"d-none":"")">
+            <partial name="_AddAdminForm" model="@Model.NewAdmin" />
+        </div>
+        <div class=" row justify-content-around align-items-center promotion-form  @(fromPromotion?"":"d-none")">
+            <partial name="_PromotionUser" model="@Model.promotion" />
+        </div>
+        
+</section>
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial.cshtml");
+    }
+    <script>
+
+        $(document).ready(function () {
+            var href = $(location).attr('href');
+
+            var arr = href.split('/');
+            var actionName = arr[arr.length - 1].toLowerCase();
+            
+            var promotion = "PromotionRealUser".toLowerCase();
+            var result = actionName == promotion;
+            
+        $('.promotion').on("click", function () {
+
+          
+                $('.admin-form').addClass('d-none')
+                $('.promotion-form').removeClass('d-none');
+
+                    });
+            $('.close-icon-pro').on("click", function () {
+               
+                if (result) {
+                    var url = '@Url.Action("AddAdmin", "Admin")';
+                    window.location.href = url;
+                }
+                else {
+                    $('.promotion-form ').addClass('d-none')
+                    $('.admin-form').removeClass('d-none');
+                }
+            });
+        });
+        </script>
+}
+   
+
+
+
+
+    
+
+

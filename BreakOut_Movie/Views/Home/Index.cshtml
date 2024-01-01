@@ -1,0 +1,91 @@
+﻿@model IEnumerable<HomeIndexVM>
+@{
+    ViewData["Title"] = "Home Page";
+   }
+
+<partial name="_IntroView" />
+
+<div class="container">
+    <div class=" container col-xl-10 col-lg-12 col-md-12 col-sm-12  col-8 ">
+
+
+        @{
+            if (Model.Any())
+            {
+                <div class="headers mt-3  ">
+                   <h1 class=""> All Movies </h1>
+
+                </div>
+                <div class="row card-group">
+                  @foreach (var movie in Model)
+                   {
+                     <!-- card-->
+                        <div class="col-xl-3 col-md-4 col-sm-6 col-12 justify-content-center mt-4 border-radius-md ">
+                            <div class="card card-profile mt-md-0 ">
+
+                                <div class="p-1 pb-0 ">
+                                    <img class="w-100 border-radius-md " height="310" src="data:image/*;base64 ,@(Convert.ToBase64String(movie.MovieNoRate.Poster!))">
+                                </div>
+
+                                <div class="card-body  mt-0   border-radius-md">
+
+                                    <div class="movie-title">
+                                        <h6 class="mb-0">@movie.MovieNoRate.Title </h6>
+                                    </div>
+
+                                    <p>
+
+                                        <span>
+
+                                            @for (int i = 1; i <= movie.TotalRate; i++)
+                                            {
+                                                <i class="bi bi-star-fill text-warning"></i>
+                                            }
+                                            @if (movie.TotalRate == 0)
+                                            {
+                                                <i class="bi bi-star text-muted"></i>
+                                            }
+                                        </span>
+                                    </p>
+                                    <div class="row d-flex justify-content-center align-items-end">
+                                        <div class=" col ">
+
+                                            <button type="button" class="card-btn" onclick="showDetailsModal(@movie.MovieNoRate.Id)">
+                                                Details
+                                            </button>
+
+
+                                        </div>
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                     <!-- Details Modal -->
+                     <partial name="_detailsModal" model="@movie" />
+                     <!-- End Details Modal -->
+                    }
+                </div>
+            }
+
+        }
+
+
+    </div>
+</div>
+
+@section Scripts{
+
+    <script>
+
+        function showDetailsModal(id) {
+            $("#Detailsmodal_" + id).modal("show");
+
+        }
+        function CloseDetailsModal(id) {
+            $("#Detailsmodal_" + id).modal('hide');
+        }
+    </script>
+
+}

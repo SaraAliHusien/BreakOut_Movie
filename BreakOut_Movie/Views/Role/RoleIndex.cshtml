@@ -1,0 +1,99 @@
+﻿@model IndexRoleVM
+@{
+  
+    bool redirected = ViewBag.Redirected?? true;
+}
+
+<div class="row col-md-11 col-12 d-flex justify-content-center align-items-center  ">
+    <div class="col-9  pt-4 form-role @(redirected?"":"d-none") " id="form-role">
+        <div class="col-lg-6 col-md-8 col-10 ">
+            <partial name="_AddRole" model="@Model.AddRole" />
+
+        </div>
+
+    </div>
+    <div class=" row col-md-9 col-11 d-flex pt-5">
+        <div class="col-5 headers" >
+            
+       
+    @if (Model.Roles.Any())
+    {
+            <h2>
+                All Role
+
+            </h2>
+            
+    }
+        </div>
+
+        <div class="col-7 d-flex justify-content-end align-items-end mb-2 @(!redirected?"":"d-none") ">
+
+            <a href="javaScript:;" class="add-btn">
+                <i class="bi bi-patch-plus"></i> Add Role
+            </a>
+        </div>
+        @if (Model.Roles.Any())
+        {
+            <table class="table table-success">
+                <thead>
+                    <tr style="text-align:center">
+                        <th style="background-color:#f4cf9f;width:10%">#</th>
+                        <th style="background-color:#f4cf9f;">Role Name</th>
+                    </tr>
+                <tbody >
+                    <tr class="d-none"> </tr>
+                        @foreach (var role in Model.Roles)
+                        {
+
+                        <tr style="text-align:center">
+                            <td style="background-color:#f4cf9f"></td>
+                            <td style="background-color:#f4cf9f">@role.Name</td>
+                        </tr>
+                        }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <div class="alert alert-warning alert-dismissible d-flex align-items-center fade show mt-5">
+                <i class="bi-exclamation-triangle-fill"></i>
+                <strong class="mx-2">Warning!</strong> No Role found ....
+
+            </div>
+        }
+    </div>
+    
+</div>
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial.cshtml");
+    }
+    <script>
+        $(document).ready(function () {
+            var href = $(location).attr('href');
+            var arr = href.split('/');
+            var actionName = arr[arr.length - 1].toLowerCase();
+            var AddRole = "AddRole".toLowerCase();
+            var result = actionName == AddRole;
+            $('.add-btn').on("click", function () {
+                $('.add-btn').addClass('d-none')
+                $('#form-role').removeClass('d-none');
+            });
+            $('.close-icon').on("click", function () {
+                if (result) {
+                    var url = '@Url.Action("Index", "Role")';
+                    window.location.href = url;
+                }
+                else {
+                    $('.form-role ').addClass('d-none')
+                    $('.add-btn').removeClass('d-none');
+                }
+            });
+        });
+        
+            
+    </script>
+}
+
+
+  

@@ -1,0 +1,43 @@
+﻿@model LoginViewModel
+<form asp-action="Login" method="post" enctype="multipart/form-data" id="loginForm">
+    <h1>Sign in</h1>
+    <div class="social-icons">
+        <a href="#" title="facebook">
+            <i class="fa fa-facebook-square" aria-hidden="true"></i>
+        </a>
+        <a href="#" title="twitter">
+            <i class="fa fa-twitter-square" aria-hidden="true"></i>
+        </a>
+        <a href="#" title="instagram">
+            <i class="fa fa-instagram" aria-hidden="true"></i>
+        </a>
+        <span>or use your account</span>
+    </div>
+
+    
+
+    <span asp-validation-for="UserName" class="text-danger"></span>
+    <input asp-for="UserName" class="form-input" placeholder="User Name" />
+
+
+    <span asp-validation-for="Password" class="text-danger"></span>
+    <input asp-for="Password" class="form-input" placeholder="Password" />
+
+
+
+    <label class="form-check-label">
+
+        <input class="form-check-input" asp-for="RememberMe" id="rememberMe" />
+        Remmeber My
+    </label>
+
+    <a href="#">Forgot your password?</a>
+
+
+    <input type="submit" value="Sign In" class=" ptn-sing" id="btnget" />
+    <p class="small-screen"> <a href="#" id="sing-up-link"> Creat new acouunt </a> if you have no account</p>
+</form>
+
+
+
+

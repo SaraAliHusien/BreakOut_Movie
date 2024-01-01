@@ -1,0 +1,163 @@
+﻿@model EditFormVM
+
+@{
+    ViewData["Title"] =  "Edit" ;
+}
+
+<section class=" FormMovie col-11 container ">
+
+    <div class="row justify-content-lg-around align-items-center ">
+        <div class="d-flex justify-content-end ">
+            <a asp-action="Index" class="close-icon">
+                <h3 style="color:#445754">  <i class="bi bi-x-square"></i> </h3>
+            </a>
+        </div>
+
+        <div class="col-lg-5  col-md-8  d-flex flex-column justify-content-center  align-items-center">
+
+            <div class=" headers mb-3" >
+                <h2>
+                     Edit Movie
+                </h2>
+            </div>
+            <form class="row g-3 form-body" method="POST" asp-action="Edit" enctype="multipart/form-data">
+
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="CurrentVideoName" value="@Model.CurrentVideoName"/>
+                <input type="hidden" asp-for="OldPoster" />
+                <div class="form-group col-md-12">
+                    <input type="text" class="form-control" asp-for="Title" maxlength="250" placeholder="Title" />
+
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div class="form-gruop col-md-6">
+                    <select class="form-control" asp-for="GenreId" asp-items="@(new SelectList(Model.Genres,"Id","Name"))">
+                        <option disabled selected hidden>
+                            Genre
+                        </option>
+                    </select>
+                    <span asp-validation-for="GenreId" class="text-danger"></span>
+                </div>
+
+
+
+                <div class="form-group col-md-6 ">
+                    <input type="number" class="form-control" asp-for="Year" value="@(Model.Year>0?( Model.Year).ToString():string.Empty)" placeholder="Year" />
+                    <span asp-validation-for="Year" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-12">
+                    <input type="text" class="form-control" asp-for="Cast" maxlength="250" value="@(Model.Cast)" placeholder="Cast Names Like: Ahmed ,Yosra ,Mohamed" />
+
+                    <span asp-validation-for="Cast" class="text-danger"></span>
+                </div>
+
+                <div class="form-group col-12">
+                    <textarea class="form-control" asp-for="StoryLine" maxlength="2500" rows="5" placeholder="Story Line"> </textarea>
+                    <span asp-validation-for="StoryLine" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <div class="input-group custom-file-button col-12">
+                        <label class="input-group-text" asp-for="Poster"></label>
+                        <input type="file" class="form-control" asp-for="Poster"  />
+
+                    </div>
+                    <span asp-validation-for="Poster" class="text-danger"></span>
+                </div>
+                 <div class="form-group">
+                <div class="input-group custom-file-button col-12">
+                <label class="input-group-text" asp-for="Video"></label>
+                <input type="file" class="form-control" asp-for="Video" data-rule-extention=""/>
+
+                </div>
+                <span asp-validation-for="Video" class="text-danger"></span>
+                </div> 
+
+                <div class="p-2 d-flex justify-content-center ">
+                    <button type="submit" class=" btn btn-primary ">
+                        <i class="bi bi-check-lg"></i>
+                        save
+                    </button>
+
+                </div>
+
+
+            </form>
+        </div>
+        <div class="row col-6">
+            <div id="poster-container" class=" col ">
+                <h3>movie poster</h3>
+                <img src="data:image/*;base64 ,@(Convert.ToBase64String(Model.OldPoster!))" alt="poster" class="img-thumbnail" width="300" height="300" />
+            </div>
+
+            <div id="Video-container" class="col">
+                <h3> video</h3>
+                <video id="video-player" width="300" height="300" controls>
+                    <source src="@($"{FileSetting.videosPath}/{Model.CurrentVideoName}") "/>
+                </video>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial.cshtml");
+    }
+
+    <script>
+        $(document).ready(function () {
+
+
+
+
+            $('#Poster').on('change', function () {
+
+
+                var posterContainer = $('#poster-container');
+                var img = window.URL.createObjectURL(this.files[0]);
+                posterContainer.removeClass('d-none');
+                posterContainer.find('img').attr('src', img)
+            });
+
+
+            const input = document.getElementById('Video');
+            const video = document.getElementById('video-player');
+            // const videoSource = document.createElement('source');
+
+            input.addEventListener('change', function () {
+                const files = this.files || [];
+
+                if (!files.length) return;
+
+                const reader = new FileReader();
+                $('#Video-container').removeClass('d-none')
+                reader.onload = function (e) {
+                    const source = video.querySelector('source');
+                    source.src = e.target.result;
+                    // videoSource.setAttribute('src', e.target.result);
+                    // video.appendChild(videoSource);
+                    video.load();
+
+                };
+
+                reader.onprogress = function (e) {
+                    console.log('progress: ', Math.round((e.loaded * 100) / e.total));
+                };
+
+                reader.readAsDataURL(files[0]);
+            });
+
+
+            $('#Year').datepicker({
+                format: 'yyyy',
+                viewMode: 'years',
+                minViewMode: 'years',
+                autoclose: true,
+                startDate: new Date('1950-01-01'),
+                endDate: new Date()
+            });
+        });
+
+    </script>
+
+}

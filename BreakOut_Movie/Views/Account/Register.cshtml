@@ -1,0 +1,45 @@
+﻿@model RegisterViewModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+
+<form asp-action="Register" method="post" enctype="multipart/form-data" id="RegisterForm">
+    <h1>Create Account</h1>
+    <div class="social-icons">
+        <a href="#" title="facebook">
+            <i class="fa fa-facebook-square" aria-hidden="true"></i>
+        </a>
+        <a href="#" title="twitter">
+            <i class="fa fa-twitter-square" aria-hidden="true"></i>
+        </a>
+        <a href="#" title="instagram">
+            <i class="fa fa-instagram" aria-hidden="true"></i>
+        </a>
+        <span>or use your email for registration</span>
+    </div>
+
+    <div asp-validation-summary="ModelOnly" class="text-danger" id="registerSummary"></div>
+
+    
+    <input asp-for="User_Name" id="RegistUser" class="form-input" placeholder="User Name" />
+    <span asp-validation-for="User_Name" class="text-danger"></span>
+
+    
+    <input asp-for="UserPassword" class="form-input" type="password" placeholder="Password" id="RegistPass" />
+    <span asp-validation-for="UserPassword" class="text-danger" ></span>
+
+
+    
+    <input asp-for="confirmPassword" class="form-input" type="password" placeholder="Confirm Your Password" />
+    <span asp-validation-for="confirmPassword" class="text-danger"></span>
+    <div style="margin-top:10px">
+        <input type="submit" value="Sign Up" class=" ptn-sing" />
+    </div>
+    <p class="small-screen "> <a href="#" id="sing-in-link"> Sign In </a> if you have account</p>
+
+
+</form>
+
+
+

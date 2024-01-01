@@ -1,0 +1,97 @@
+﻿@model UserHomeVM
+
+<div class="col-xl-3 col-md-4 col-sm-6 col-12 justify-content-center mt-4 border-radius-md ">
+    <div class="card card-profile mt-md-0 ">
+
+        <div class="p-1 pb-0 ">
+            <img class="w-100 border-radius-md " height="310" src="data:image/*;base64 ,@(Convert.ToBase64String(Model.Movie.MovieNoRate.Poster!))">
+        </div>
+
+        <div class="card-body  mt-0   border-radius-md">
+
+            <div class="movie-title">
+                <h6 class="mb-0">@Model.Movie.MovieNoRate.Title </h6>
+            </div>
+
+
+            <p>
+
+                <span>
+
+                    @for (int i = 1; i <= Model.Movie.TotalRate; i++)
+                    {
+                        <i class="bi bi-star-fill text-warning"></i>
+                    }
+                    @if (Model.Movie.TotalRate == 0)
+                    {
+                        <i class="bi bi-star text-muted"></i>
+                    }
+                </span>
+            </p>
+            <div class="row d-flex justify-content-center align-items-end">
+                <div class=" col ">
+
+                    <button type="button" class="card-btn" onclick="showDetailsModal(@Model.Movie.MovieNoRate.Id)">
+                        Details
+                    </button>
+
+
+                </div>
+
+                <div class="col-auto d-flex justify-content-end align-items-end ">
+
+                    <buttom type="button" class="card-btn watch" onclick="DisplayVideoModal(@Model.Movie.MovieNoRate.Id,@Model.userRate)">
+                        <i class="bi bi-play-circle watch"></i> Watch
+
+                    </buttom>
+                    <!-- Display Video Modal -->
+
+                    <div class="modal fade " id="ModalVideo_@Model.Movie.MovieNoRate.Id" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-fullscreen" role="document">
+                            <div class="modal-content">
+                                <div class=" video row navbar ">
+                                    <div class="col-6 d-flex justify-content-start  ">
+                                        <div class="me-3 ms-3">
+                                            <a class="download" asp-action="downloads" asp-route-id="@Model.Movie.MovieNoRate.Id">
+                                                <i class="bi bi-download"></i>
+                                            </a>
+                                        </div>
+                                        <div class="me-3 ms-3">
+                                            <a class="rating " href="javaScript:;" onclick="RatingModal(@Model.Movie.MovieNoRate.Id)">
+                                                <i class="bi bi-star white-icon" id="rating-star_@Model.Movie.MovieNoRate.Id"></i>
+                                            </a>
+                                        </div>
+                                        <div class="me-3 ms-3 ">
+                                            <a id="isFavorite_@Model.Movie.MovieNoRate.Id" href="javaScript:;" onclick="AddFavorite(@Model.Movie.MovieNoRate.Id)">
+                                                <i class="bi @(Model.IsFavorite?"bi-heart-fill red-icon":"bi-heart white-icon") " id="heart_@Model.Movie.MovieNoRate.Id" style=""></i>
+
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 d-flex justify-content-end ps-2 pe-5">
+
+                                        <div claa="video-title">
+                                            <h3 style="color:white;text-transform:capitalize;">@Model.Movie.MovieNoRate.Title</h3>
+                                        </div>
+
+                                        <div class="ms-2">
+                                            <button type="button" class="modal-close" onclick="CloseVideoModal(@Model.Movie.MovieNoRate.Id)">
+                                                <h2> <i class="bi bi-x"></i></h2>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-body" id="modal-body_@Model.Movie.MovieNoRate.Id">
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End display video Modal -->
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>

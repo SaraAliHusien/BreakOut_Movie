@@ -1,0 +1,123 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - BreakOut_Movie</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="~/lib/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap-datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap-datepicker/css/bootstrap-datepicker.standalone.min.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap-datepicker/css/bootstrap-datepicker.standalone.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap-datepicker/css/bootstrap-datepicker.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap-datepicker/css/bootstrap-datepicker3.standalone.min.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap-datepicker/css/bootstrap-datepicker3.standalone.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap-datepicker/css/bootstrap-datepicker3.css" rel="stylesheet" />
+    <link href="~/lib/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@500&display=swap" rel="stylesheet">
+    <link href="~/lib/animate.css/animate.min.css" rel="stylesheet" />
+
+
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/BreakOut_Movie.styles.css" asp-append-version="true" />
+    <link href="~/css/style.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="box">
+    <header>
+            <nav class="navbar navbar-expand-lg  navbar-dark " id="neubar" style="background-color:#1b3c59">
+            <div class="container">
+                    <a class="navbar-brand" href="#"><b style="margin-bottom:0;font-size:2vw;font-family:Georgia">Break <b style="color:#f2f2f2">Out</b></b></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class=" collapse navbar-collapse" id="navbarNavDropdown">
+                    <ul class="navbar-nav ms-auto ">
+                       
+                       
+
+                        @if (User.Identity!.IsAuthenticated )
+                        {
+                                <li class="nav-item">
+                                    <a class="nav-link mx-2 " asp-area="" asp-action="UserHome" asp-controller="Home">Home</a>
+                                </li>
+                                if (User.IsInRole("Admin") || User.IsInRole("MainAdmin"))
+                            {
+                                   
+                                <li class="nav-item">
+                                    <a class="nav-link mx-2" asp-area="" asp-action="Index" asp-controller="Movie">Movies</a>
+                                </li>
+
+                                    <li class="nav-item">
+                                        <a class="nav-link mx-2" asp-area="" asp-action="Index" asp-controller="Genre">Genres</a>
+                                    </li>
+                                    if (User.IsInRole("MainAdmin"))
+                                    {
+                                        <li class="nav-item">
+                                            <a class="nav-link mx-2" asp-area="" asp-action="AdminIndex" asp-controller="Admin">Admins</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link mx-2" asp-area="" asp-action="Index" asp-controller="Role">Roles</a>
+                                        </li>
+                                    }
+                                }
+                            else{
+                                <li class="nav-item">
+                                    <a class="nav-link mx-2 " asp-area="" asp-action="Login" asp-controller="Account">About</a>
+                                </li>
+                            }
+                            
+                            <li class="nav-item">
+                                <a class="nav-link mx-2 active" asp-area="" asp-action="Logout" asp-controller="Account">Sign Out</a>
+                            </li>
+
+
+                        }
+                        else
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link mx-2 " asp-area="" asp-action="Index" asp-controller="Home">Home</a>
+                                </li>
+                            <li class="nav-item">
+                                <a class="nav-link mx-2 " asp-area="" asp-action="Login" asp-controller="Account">About</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link mx-2 active" asp-area="" asp-action="Login" asp-controller="Account">Sign In</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+        <div class="">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+        <footer class="border-top footer text-muted" >
+        <div class="container">
+            &copy; 2023 - BreakOut_Movie - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/lib/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="~/lib/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script src="~/lib/sweetalert2/sweetalert2.min.js"></script>
+    <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+    @await Component.InvokeAsync("NToastNotify")
+</body>
+</html>

@@ -1,0 +1,200 @@
+﻿@model IEnumerable<HomeIndexVM>
+@{
+    ViewData["Title"] = "Movie Page";
+}
+
+
+<div class="container">
+    <div class="container col-xl-10 col-lg-12 col-md-12 col-sm-12  col-8 ">
+        <div class=" row  d-flex pt-5">
+            <div class="col-6 headers">
+                @if (Model.Any())
+                {
+                    <h2>
+                        All movies
+
+                    </h2>
+                }
+            </div>
+
+            <div class="col-6 d-flex justify-content-end align-items-end mb-2  ">
+
+                <a asp-action="Create" asp-controller="Movie" class="add-btn">
+                    <i class="bi bi-patch-plus"></i> Add Movie
+                </a>
+            </div>
+
+            </div>
+
+        @{
+            if (Model.Any())
+            {
+                
+                    <div class="row card-group">
+                        @foreach (var movie in Model)
+                    {
+                            <div class="col-xl-3 col-md-4 col-sm-6 col-12 justify-content-center mt-4 border-radius-md  grand-parent">
+                                <div class="card card-profile ">
+
+                                    <div class="p-1 pb-0">
+                                        <img class="w-100 border-radius-md " height="310" src="data:image/*;base64 ,@(Convert.ToBase64String(movie.MovieNoRate.Poster!))">
+                                    </div>
+
+                                    <div class="card-body  mt-0  ">
+                                    <div class="movie-title">
+                                        <h6 class="mb-0">@movie.MovieNoRate.Title </h6>
+                                    </div>
+
+                                    <p>
+
+                                        <span>
+
+                                            @for (int i = 1; i <= movie.TotalRate; i++)
+                                            {
+                                                <i class="bi bi-star-fill text-warning"></i>
+                                            }
+                                            @if (movie.TotalRate == 0)
+                                            {
+                                                <i class="bi bi-star text-muted"></i>
+                                            }
+                                        </span>
+                                    </p>
+
+                                      <div class="row d-flex justify-content-center align-items-end">
+
+                                                <div class=" col card-ptn-l ">
+
+                                                    <button type="button" class="card-btn" onclick="showModal(@movie.MovieNoRate.Id)">
+                                                        <span>
+                                                            Details
+                                                        </span>
+                                                    </button>
+                                                    <!-- Details modal -->
+                                                   <partial name="_detailsModal" model="@movie" />
+                                                     <!-- End Details Modal -->
+                                                    </div>
+                                                <div class="col  card-ptn-r d-flex justify-content-end align-items-end ">
+                                                    <div class="col-6 pt-1 d-flex justify-content-end align-items-end genre-btn">
+                                                <a asp-action="Edit" asp-controller="Movie" asp-route-id="@movie.MovieNoRate.Id">
+                                                            <i class="bi bi-pencil-square edit"></i>
+                                                        </a>
+                                                        <a class="js-delete" href="javaScript:;" data-id="@movie.MovieNoRate.Id">
+
+                                                            <i class="bi bi-trash3-fill delete"></i>
+                                                        </a>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                    }
+                    </div>
+            }
+            else
+            {
+                <div class="alert alert-warning alert-dismissible d-flex align-items-center fade show mt-5">
+                    <i class="bi-exclamation-triangle-fill"></i>
+                    <strong class="mx-2">Warning!</strong> No Movies found ....
+
+                </div>
+            }
+
+        }
+     
+
+
+    </div>
+</div>
+
+
+
+
+@section Scripts{
+    
+    <script>
+        function showModal(id) {
+            $("#Detailsmodal_" + id).modal("show");
+        }
+        function CloseDetailsModal(id) {
+            $("#Detailsmodal_" + id).modal('hide');
+        }
+
+    
+        
+
+       
+
+        $(document).ready(function () {
+            
+            $('.js-delete').on('click', function () {
+                var btn = $(this);
+                Swal.fire({
+                   
+                    title: "Are you sure you want to delete this movie?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#f9b17a",
+                    cancelButtonColor: "gray",
+                    confirmButtonText: " Delete",
+                    color: "#f78316",
+                    background: "#1b3c59 ",
+                   
+                }).then((result) => {
+                    if (result.isConfirmed) {
+
+
+                        $.ajax({
+                            url: '/Movie/Delete/' + btn.data('id'),
+                            type:'post',
+                            success: function () {
+
+
+                                btn.parents('.grand-parent').addClass('animate__bounceOut');
+
+                                setTimeout(function () {
+                                    btn.parents('.grand-parent').remove();
+                                }, 800);
+                                Swal.fire({
+                                    title: "Deleted!",
+                                    text: "The Movie has been deleted.",
+                                    icon: "success",
+                                    
+                                    confirmButtonColor: "#f9b17a",
+                                    color: "#f78316",
+                                    background: "#1b3c59 ",
+                                    
+                                });
+                                
+
+                            },
+
+                            error: function () {
+                                Swal.fire({
+
+                                    title: "Ooooops!",
+                                    text: "Something went wrong!",
+                                    icon: "error",
+                                    confirmButtonColor: "#c62d2d",
+                                    color: "#c62d2d",
+                                    background: "#1b3c59 ",
+                                });
+                               
+
+                            }
+                        });
+                      
+                    }
+                });
+
+            });
+        });
+
+
+
+    </script>
+
+}
+ 
