@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BreakOut_Movie.Migrations
 {
     [DbContext(typeof(BreakOut_DbContext))]
-    [Migration("20231220172719_editFk")]
-    partial class editFk
+    [Migration("20240102132234_add-role")]
+    partial class addrole
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -89,6 +89,23 @@ namespace BreakOut_Movie.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("BreakOut_Movie.Models.FavoriteMovie", b =>
+                {
+                    b.Property<int>("MovieId")
+                        .HasColumnType("int")
+                        .HasColumnOrder(0);
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnOrder(0);
+
+                    b.HasKey("MovieId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("FavoriteMovies");
+                });
+
             modelBuilder.Entity("BreakOut_Movie.Models.Genre", b =>
                 {
                     b.Property<byte>("Id")
@@ -108,6 +125,9 @@ namespace BreakOut_Movie.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Name")
+                        .IsUnique();
+
                     b.ToTable("Genres");
                 });
 
@@ -119,10 +139,11 @@ namespace BreakOut_Movie.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<byte>("GenreId")
-                        .HasColumnType("tinyint");
+                    b.Property<string>("Cast")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
-                    b.Property<byte?>("GenreId1")
+                    b.Property<byte>("GenreId")
                         .HasColumnType("tinyint");
 
                     b.Property<byte[]>("Poster")
@@ -150,8 +171,6 @@ namespace BreakOut_Movie.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("GenreId");
-
-                    b.HasIndex("GenreId1");
 
                     b.ToTable("Movies");
                 });
@@ -309,6 +328,25 @@ namespace BreakOut_Movie.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("BreakOut_Movie.Models.FavoriteMovie", b =>
+                {
+                    b.HasOne("BreakOut_Movie.Models.Movie", "Movie")
+                        .WithMany()
+                        .HasForeignKey("MovieId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BreakOut_Movie.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Movie");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("BreakOut_Movie.Models.Movie", b =>
                 {
                     b.HasOne("BreakOut_Movie.Models.Genre", "Genre")
@@ -316,10 +354,6 @@ namespace BreakOut_Movie.Migrations
                         .HasForeignKey("GenreId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.HasOne("BreakOut_Movie.Models.Genre", null)
-                        .WithMany("Movies")
-                        .HasForeignKey("GenreId1");
 
                     b.Navigation("Genre");
                 });
@@ -392,11 +426,6 @@ namespace BreakOut_Movie.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("BreakOut_Movie.Models.Genre", b =>
-                {
-                    b.Navigation("Movies");
                 });
 #pragma warning restore 612, 618
         }
